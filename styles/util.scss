@@ -1,0 +1,98 @@
+$blue: rgb(79,195,247);
+$green: rgb(102,187,106);
+$purple: rgb(171,71,188);
+$red: rgb(198,40,40);
+$white: white;
+
+$shadow1: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+$shadow2: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+$shadow3: rgba(0, 0, 0, 0.19) 0px 10px 30px, rgba(0, 0, 0, 0.23) 0px 6px 10px;
+
+@mixin center {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin wave($color, $ms){
+  background-color: $color;
+  box-shadow: 0px 0px 1px 1px $color, 0px 0px 6px 2px rgba($color, 0.8);
+  transition: all $ms ease-in-out;
+}
+
+@keyframes pulse{
+  from{
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%) scale3d(1, 1, 1);
+  }
+  80%, to{
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50%) scale3d(5, 1.5, 1);
+  }
+}
+
+@keyframes particle-down {
+  from{
+    opacity: 0;
+    top: 0%;
+  }
+  20%{
+    opacity: 0.8;
+  }
+  80%, to{
+    opacity: 0;
+    top: 100%;
+  }
+}
+
+@keyframes particle-up {
+  from{
+    opacity: 0;
+    top: 100%;
+  }
+  20%{
+    opacity: 0.8;
+  }
+  80%, to{
+    opacity: 0;
+    top: 0%;
+  }
+}
+
+@keyframes loading{
+  from, to{
+    height: 4px;
+  }
+  50%{
+    height: 12px;
+  }
+}
+
+@keyframes bounce-in-right {
+  from, 60%, 75%, 90%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  from {
+    opacity: 0;
+    transform: translate3d(3000px, 0, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(-25px, 0, 0);
+  }
+
+  75% {
+    transform: translate3d(10px, 0, 0);
+  }
+
+  90% {
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  to {
+    transform: none;
+  }
+}

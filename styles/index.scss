@@ -1,0 +1,403 @@
+@import 'util.scss';
+
+html, body, #root{
+  font-family: 'Barlow Condensed', sans-serif;
+  height: 100%;
+  margin: 0px;
+  overflow: hidden;
+  padding: 0px;
+  width: 100%;
+}
+
+#music-app{
+  background-image: url('link/background.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 100%;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+  
+  &:hover{
+    #control-bar{
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+  
+  #loading{
+    @include center;
+    backface-visibility: hidden;
+    height: 12px;
+    position: absolute;
+    text-align: center;
+    transition: all 0.4s;
+    width: 100%;
+    z-index: 100;
+    
+    &.visible{
+      .bar{
+        animation: loading 1s ease-in-out infinite;
+      }
+    }
+    
+    &.done{
+      #bars{
+        width: 100%;
+        .bar{
+          &:nth-child(1), &:nth-child(3){
+            opacity: 0;
+            transition: all 0s;
+          }
+          &:nth-child(2){
+            width: 100%;
+          }
+        }
+      }
+    }
+    
+    &.hide{
+      opacity: 0;
+    }
+    
+    #bars{
+      height: 12px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      transition: all 0.4s;
+      width: 26px;
+      .bar{
+        background-color: white;
+        box-shadow: 0px 0px 1px 1px white, 0px 0px 6px 2px rgba(white, 0.8);
+        display: inline-block;
+        height: 4px;
+        position: absolute;
+        top: 50%;
+        transition: all 1s;
+        transition-timing-function: ease-in-out;
+        transform: translateY(-50%);
+        width: 4px;
+
+        &:nth-child(1){
+          left: 0px;
+        }
+
+        &:nth-child(2){
+          animation-delay: 0.3s;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
+        }
+
+        &:nth-child(3){
+          animation-delay: 0.6s;
+          left: 22px;
+        }
+      }
+    }
+  }
+  
+  #top-bar{
+    left: 0px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 100;
+    
+    #time, #title{
+      display: inline-block;
+      margin: 10px 20px;
+      position: absolute;
+      top: 0px;
+      
+      h1{
+        color: white;
+        font-size: 2em;
+        font-weight: 400;
+        margin: 0px;
+        text-shadow: 0px 0px 2px rgba(black, 0.6);
+      }
+    }
+    
+    #time{
+      left: 0px;
+      h1{
+        letter-spacing: 1px;
+      }
+    }
+    
+    #title{
+      animation: bounce-in-right 1s ease-in;
+      right: 0px;
+      #main-title, #sub-title{
+        text-align: right;
+        text-transform: uppercase;
+      }
+      
+      #sub-title{
+        font-size: 1.5em;
+      }
+    }
+  }
+  
+  #control-bar{
+    background: linear-gradient(to top, rgba(black, 0.4), rgba(black, 0.2));
+    bottom: 0px;
+    height: 50px;
+    left: 0px;
+    opacity: 0;
+    position: absolute;
+    transform: translateY(100%);
+    transition: all 0.4s;
+    width: 100%;
+    z-index: 100;
+    
+    &:hover, &.dragging{
+      #progress-bar{
+        #filled{
+          #dragger{
+            opacity: 1; 
+            transform: translateY(-50%) scale(1);
+          }
+        }
+      }
+    }
+    
+    &.dragging{
+      #progress-bar{
+        #filled{
+          #dragger{
+            opacity: 1; 
+            transform: translateY(-50%) scale(1);
+            
+            &:before{
+              height: 30px;
+              width: 30px;
+            }
+            
+            &:after{
+              height: 80px;
+              width: 80px;
+              z-index: -1;
+            }
+          }
+        }
+      }
+    }
+      
+    #progress-bar{
+      background-color: rgba(white, 0.2);
+      height: 4px;
+      left: 0px;
+      position: absolute;
+      top: 0px;
+      width: 100%;
+      z-index: 3;
+      
+      #filled{
+        background-color: $red;
+        display: inline-block;
+        height: 4px;
+        left: 0px;
+        position: absolute;
+        top: 0px;
+        z-index: 3;
+        
+        #dragger{
+          cursor: pointer;
+          height: 20px;
+          opacity: 0;
+          position: absolute;
+          right: -10px;
+          top: 50%;
+          transform: translateY(-50%) scale(0.25);
+          transition: all 0.4s;
+          width: 20px;
+          z-index: 3;
+          
+          &:before, &:after{
+            @include center;
+            background-color: $red;
+            border-radius: 100px;
+            content: '';
+            height: 20px;
+            transition: all 0.25s;
+            width: 20px;
+          }
+          
+          &:after{
+            background-color: rgba($red, 0.2);
+            pointer-events: none;
+          }
+          
+          &:hover{
+            &:before{
+              height: 30px;
+              width: 30px;
+            }
+            
+            &:after{
+              height: 80px;
+              width: 80px;
+              z-index: -1;
+            }
+          }
+        }
+      }
+    }
+    
+    .button{
+      cursor: pointer;
+      display: inline-block;
+      height: 50px;
+      vertical-align: top;
+      width: 50px;
+      
+      i{
+        color: white;
+        font-size: 1.25em;
+        height: 50px;
+        line-height: 50px;
+        margin: 0px;
+        text-align: center;
+        width: 50px;
+      }
+    }
+    
+    #play-toggle, #volume-toggle{
+      &.toggled{
+        #play, #volume-on{
+          opacity: 0;
+          transform: scale(0.25);
+        }
+        #pause, #volume-off{
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      
+      #play, #pause, #volume-on, #volume-off{
+        height: 50px;
+        position: absolute;
+        transition: all 0.4s;
+        width: 50px;
+      }
+      
+      #play, #volume-on{
+        opacity: 1;
+      }
+      #pause,  #volume-off{
+        opacity: 0;
+        transform: scale(0.25);
+      }
+    }
+    
+    #control-bar-time{
+      display: inline-block;
+      height: 50px;
+      vertical-align: top;
+      
+      h1{
+        color: white;
+        font-size: 1.25em;
+        font-weight: 400;
+        height: 50px;
+        line-height: 50px;
+        margin: 0px;
+        
+        #current-time, #end-time{
+          display: inline-block;
+          text-align: center;
+          width: 30px;
+        }
+      }
+    }
+  }
+  
+  #sound-waves{
+    background-color: rgba(black, 0.6);
+    height: 100%;
+    opacity: 0;
+    position: relative;
+    transition: all 2s;
+    transition-delay: 1.4s;
+    transition-timing-function: ease-in-out;
+    width: 100%;
+    z-index: 1;
+    
+    &.visible{
+      opacity: 1;
+    }
+    
+    .sound-wave{
+      @include center;
+      display: flex;
+      height: 4px;
+      justify-content: space-around;
+      text-align: center;
+      width: 100%;
+      z-index: 10;
+
+      &#wave-1{
+        z-index: 2;
+        .sound-line{
+          @include wave(white, 150ms);
+        }
+      }
+
+      &#wave-2{
+        z-index: 3;
+        .sound-line{
+          @include wave(white, 150ms);
+        }
+      }
+
+      &#wave-3{
+        z-index: 1;
+        .sound-line{
+          @include wave(white, 100ms);
+        }
+      }
+
+      .sound-line{
+        backface-visibility: hidden;
+        display: inline-block;
+        position: relative;
+        transform: translateY(-50%);
+        top: 50%;
+        width: 4px;
+      }
+    }
+  }
+  
+  #particles{
+    @include center;
+    height: 2px;
+    opacity: 0;
+    transition: all 2s;
+    transition-delay: 1.4s;
+    transition-timing-function: ease-in-out;
+    width: 100%;
+    z-index: 10;
+    
+    &.visible{
+      opacity: 1;
+    }
+    
+    .particle-path{
+      position: absolute;
+      transition: opacity 0.4s;
+      width: 2px;
+      .particle{
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        background-color: white;
+        border-radius: 10px;
+        height: 2px;
+        position: absolute;
+        width: 2px;
+      }
+    }
+  }
+}
